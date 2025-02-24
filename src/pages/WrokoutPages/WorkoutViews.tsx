@@ -4,105 +4,83 @@ import { useWorkout } from "../../contexts/WorkoutContext";
 import { deleteWorkout } from "../../services/WorkoutAPI";
 import { showToast } from "../../helpers/ToastHelper";
 import { useNavigate } from "react-router-dom";
-import { YOUR_WORKOUTS,LOADING_WORKOUTS,ASC,ASCENDING,DESCENDING,ARE_U_SURE2,NEXT,PREVIOUS,BACK_TO_DASHBOARD, CONFIRM_DELETE, CANCEL, DELETE, NO_WORKOUTS } from "../../constants";
+import { YOUR_WORKOUTS, LOADING_WORKOUTS, ASC, ASCENDING, DESCENDING, ARE_U_SURE2, NEXT, PREVIOUS, BACK_TO_DASHBOARD, CONFIRM_DELETE, CANCEL, DELETE, NO_WORKOUTS } from "../../constants";
 
-
-// This page displays all of the user’s recorded workout Cards and pagination has been added on cards
 const WorkoutViews: React.FC = () => {
-  const { workouts, loading, error,fetchWorkouts } = useWorkout();
+  const { workouts, loading, error, fetchWorkouts } = useWorkout();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const workoutsPerPage = 4;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [workoutId, setworkoutId] = useState(null);
-
+  const [workoutId, setWorkoutId] = useState(null);
   const navigate = useNavigate();
-  
-  //requests for sorting according to ascending or descending order
+
   const sortedWorkouts = [...workouts].sort((a, b) => {
     const dateA = new Date(a.workout_date).getTime();
     const dateB = new Date(b.workout_date).getTime();
-    
     return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
   });
-  
 
-  //logic for pagination
   const totalPages = Math.ceil(sortedWorkouts.length / workoutsPerPage);
-  
   const indexOfLastWorkout = currentPage * workoutsPerPage;
   const indexOfFirstWorkout = indexOfLastWorkout - workoutsPerPage;
   const currentWorkouts = sortedWorkouts.slice(indexOfFirstWorkout, indexOfLastWorkout);
-  
-  //handles pagination for next page
-  const nextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-  
-  //handles pagination for previous page
-  const prevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
 
-  //handles sorting
-  const toggleSortOrder = () => {
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-  };
+  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
-  //handles workout id to delete and opens modal
-  const handleDeleteClick = (workoutId:any) => {
-    setworkoutId(workoutId);
+  const toggleSortOrder = () => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+
+  const handleDeleteClick = (id: any) => {
+    setWorkoutId(id);
     setIsModalOpen(true);
   };
 
-  //handles delete cutton call and closing modal
-  const confirmDelete = async() => {
-    const token:any=localStorage.getItem("accessToken");
-    if (workoutId){
-          await deleteWorkout(token,workoutId);
-          showToast("Workout Deleted Successfully", "success");
-          fetchWorkouts();
-          setIsModalOpen(false);
-        }
+  const confirmDelete = async () => {
+    const token: any = localStorage.getItem("accessToken");
+    if (workoutId) {
+      await deleteWorkout(token, workoutId);
+      showToast("Workout Deleted Successfully", "success");
+      fetchWorkouts();
+      setIsModalOpen(false);
     }
+  };
 
-    const handleBack = () => {
-      navigate("/");
-    };
+  const handleBack = () => navigate("/");
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-8">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-6xl text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">{YOUR_WORKOUTS}</h2>
+    <div className="flex flex-col justify-center h-[500px] bg-gray-100 p-12 mt-36">
+      <div className="bg-white p-12 rounded-2xl shadow-2xl w-full max-w-full text-center">
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-10">{YOUR_WORKOUTS}</h2>
 
         {loading && <p className="text-gray-500">{LOADING_WORKOUTS}</p>}
         {error && <p className="text-red-500">{error}</p>}
 
         {workouts.length > 0 ? (
           <>
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-8">
               <button
                 onClick={toggleSortOrder}
-                className="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg transition-all hover:bg-blue-600"
+                className="cursor-pointer bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-purple-700"
               >
                 Sort by Date ({sortOrder === ASC ? ASCENDING : DESCENDING})
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 justify-center items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
               {currentWorkouts.map((workout) => (
-                <WorkoutCard key={workout.workout_id} workout={workout} onDelete={handleDeleteClick}/>
+                <WorkoutCard key={workout.workout_id} workout={workout} onDelete={handleDeleteClick} />
               ))}
             </div>
 
             {totalPages > 1 && (
-              <div className="flex flex-col justify-center items-center mt-10 space-x-6">
-                <div className="flex justify-center items-center mt-10 space-x-6">
+              <div className="flex flex-col justify-center items-center mt-12 space-y-4">
+                <div className="flex justify-center items-center space-x-8">
                   <button
                     onClick={prevPage}
                     disabled={currentPage === 1}
-                    className={`px-6 py-2 rounded-lg text-white font-medium transition ${
-                      currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+                    className={`px-6 py-3 rounded-lg text-white font-medium transition ${
+                      currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-600 cursor-pointer"
                     }`}
                   >
                     {PREVIOUS}
@@ -115,8 +93,8 @@ const WorkoutViews: React.FC = () => {
                   <button
                     onClick={nextPage}
                     disabled={currentPage === totalPages}
-                    className={`px-6 py-2 rounded-lg text-white font-medium transition ${
-                      currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+                    className={`px-6 py-3 rounded-lg text-white font-medium transition ${
+                      currentPage === totalPages ? " bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
                     }`}
                   >
                     {NEXT}
@@ -125,22 +103,21 @@ const WorkoutViews: React.FC = () => {
 
                 <button
                   onClick={handleBack}
-                  className="m-auto w-96 mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200"
+                  className="cursor-pointer w-80 bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition duration-200"
                 >
                   {BACK_TO_DASHBOARD}
                 </button>
 
-
                 {isModalOpen && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                      <h2 className="text-lg font-bold">{CONFIRM_DELETE}</h2>
-                      <p>{ARE_U_SURE2}</p>
-                      <div className="flex justify-end mt-4">
-                        <button onClick={() => setIsModalOpen(false)} className="bg-gray-300 px-4 py-2 rounded mr-2">
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-8 rounded-xl shadow-lg w-96">
+                      <h2 className="text-xl font-bold text-gray-800">{CONFIRM_DELETE}</h2>
+                      <p className="text-gray-600 mt-2">{ARE_U_SURE2}</p>
+                      <div className="flex justify-end mt-6 space-x-4">
+                        <button onClick={() => setIsModalOpen(false)} className="cursor:pointer bg-gray-300 px-5 py-2 rounded-lg">
                           {CANCEL}
                         </button>
-                        <button onClick={confirmDelete} className="bg-red-500 text-white px-4 py-2 rounded">
+                        <button onClick={confirmDelete} className="cursor:pointer bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-gray-800">
                           {DELETE}
                         </button>
                       </div>
@@ -151,7 +128,7 @@ const WorkoutViews: React.FC = () => {
             )}
           </>
         ) : (
-          <p className="text-gray-500 mt-4">{NO_WORKOUTS}</p>
+          <p className="text-gray-500 mt-6">{NO_WORKOUTS}</p>
         )}
       </div>
     </div>

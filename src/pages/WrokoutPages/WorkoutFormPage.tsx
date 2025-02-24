@@ -98,12 +98,12 @@ const WorkoutFormPage = () => {
   };
 
   return (
-    <div className="mt-64">
+    <div className="mt-32">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200 space-y-3"
       >
-        <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
+        <h2 className="text-xl font-semibold text-purple-700 text-center mb-4">
           {formData ? EDIT_WORKOUT_PAGE : ADD_WORKOUT_PAGE}
         </h2>
 
@@ -115,7 +115,7 @@ const WorkoutFormPage = () => {
           <select
             id="exercise_type"
             {...register("exercise_type", { required: "Exercise type is required" })}
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
           >
             <option value="">Select exercise type</option>
             <option value="chest">Chest</option>
@@ -143,7 +143,7 @@ const WorkoutFormPage = () => {
               min: { value: 1, message: "Duration must be greater than 0" },
             })}
             placeholder="0"
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
           />
           {errors.duration && (
             <p className="text-red-500 text-sm">{errors.duration.message}</p>
@@ -162,7 +162,7 @@ const WorkoutFormPage = () => {
               min: { value: 1, message: "Calories burned must be greater than 0" },
             })}
             placeholder="0"
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
           />
           {errors.calories_burned && (
             <p className="text-red-500 text-sm">{errors.calories_burned.message}</p>
@@ -179,7 +179,7 @@ const WorkoutFormPage = () => {
             {...register("workout_date", {
               required: "Workout date is required",
             })}
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
           />
           {errors.workout_date && (
             <p className="text-red-500 text-sm">{errors.workout_date.message}</p>
@@ -188,7 +188,7 @@ const WorkoutFormPage = () => {
 
         <button
           type="submit"
-          className="mt-5 w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-medium py-3 rounded-md transition-all"
+          className="cursor-pointer mt-5 w-full bg-purple-600 hover:bg-gray-800 text-white text-lg font-medium py-3 rounded-md transition-all"
         >
           {formData ? UPDATE_WORKOUT : ADD_WORKOUT_PAGE}
         </button>
@@ -196,7 +196,7 @@ const WorkoutFormPage = () => {
         <button
           onClick={handleBack}
           type="button"
-          className="m-auto w-96 mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200"
+          className="cursor-pointer m-auto w-full mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200"
         >
           {BACK_TO_DASHBOARD}
         </button>

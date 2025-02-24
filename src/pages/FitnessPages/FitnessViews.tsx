@@ -50,14 +50,14 @@ const FitnessViews = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
-  <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-7xl text-center"> 
-    <h2 className="text-2xl font-bold text-gray-800 mb-6">{FITNESS_GOALS}</h2>
+    <div className="flex flex-col justify-center items-center h-[500px] bg-gray-100 p-12 mt-32">
+      <div className="bg-white p-12 rounded-2xl shadow-2xl w-full max-w-full text-center">
+  <h2 className="text-4xl font-extrabold text-gray-800 mb-10">{FITNESS_GOALS}</h2>
 
     {loading && <p className="text-gray-500">{LOAD_FITNESS}</p>}
     {error && <p className="text-red-500">{error}</p>}
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
       {currentGoals.length > 0 ? (
         currentGoals.map((goal) => (
           <FitnessCard
@@ -79,7 +79,7 @@ const FitnessViews = () => {
           className={`px-4 py-2 rounded-lg text-white font-medium ${
             currentPage === 1
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
+              : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
           }`}
         >
           {PREVIOUS}
@@ -90,7 +90,7 @@ const FitnessViews = () => {
           className={`px-4 py-2 rounded-lg text-white font-medium ${
             indexOfLastGoal >= fitnessGoals.length
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
+              : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
           }`}
         >
           {NEXT}
@@ -99,7 +99,7 @@ const FitnessViews = () => {
 
       <button
         onClick={handleBack}
-        className="m-auto w-96 mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200"
+        className="cursor-pointer m-auto w-96 mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200"
       >
         {BACK_TO_DASHBOARD}
       </button>
@@ -114,13 +114,13 @@ const FitnessViews = () => {
         <div className="flex justify-end mt-4">
           <button
             onClick={() => setIsModalOpen(false)}
-            className="bg-gray-300 px-4 py-2 rounded mr-2"
+            className="cursor-pointer bg-gray-300 px-4 py-2 rounded mr-2"
           >
             {CANCEL}
           </button>
           <button
             onClick={confirmDelete}
-            className="bg-red-500 text-white px-4 py-2 rounded"
+            className="cursor-pointer bg-purple-600 hover:bg-gray-800 text-white px-4 py-2 rounded"
           >
             {DELETE}
           </button>

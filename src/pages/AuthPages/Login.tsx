@@ -4,7 +4,6 @@ import { useUserContext } from '../../contexts/UserContext';
 import { login } from '../../services/UserAPI';
 import { showToast } from '../../helpers/ToastHelper';
 import { LOGIN, BACK_TO_LANDING } from '../../constants';
-// import { LoginData, APIResponse, User } from '../../interfaces/UserInterface';
 
 interface LoginFormData {
   email: string;
@@ -22,10 +21,9 @@ const Login = () => {
   } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
-    // Data validation is handled by react-hook-form
     try {
-      const response: any= await login(data);
-      if (response.status==200) {
+      const response: any = await login(data);
+      if (response.status === 200) {
         setUser(response.user);
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
@@ -46,27 +44,27 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Login</h2>
+        <h2 className="text-2xl font-bold text-purple-700 text-center mb-4">Login</h2>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            {...register("email", { required: "Email is required" })} 
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+          <input
+            type="email"
+            placeholder="Email"
+            {...register("email", { required: "Email is required" })}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 
           <input
             type="password"
             placeholder="Password"
-            {...register("password", { required: "Password is required" })} 
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("password", { required: "Password is required" })}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg transition duration-200"
+            className="w-full cursor-pointer bg-purple-600 hover:bg-gray-800 text-white font-bold py-2 rounded-lg transition duration-200"
           >
             {LOGIN}
           </button>
@@ -74,7 +72,7 @@ const Login = () => {
 
         <button
           onClick={handleBack}
-          className="w-96 mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-lg transition duration-200"
+          className="cursor-pointer w-full mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-lg transition duration-200"
         >
           {BACK_TO_LANDING}
         </button>

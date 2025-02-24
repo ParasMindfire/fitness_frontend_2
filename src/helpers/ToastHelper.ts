@@ -12,5 +12,6 @@ export const showToast = (message: string, type: "success" | "error") => {
     draggable: true,
     theme: "colored",
     type: type,
+    style: { marginTop: "60px" }
   });
 };

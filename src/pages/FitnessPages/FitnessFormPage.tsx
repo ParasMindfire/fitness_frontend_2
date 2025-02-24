@@ -57,7 +57,6 @@ const FitnessFormPage = () => {
     },
   });
 
-  // Populate the form when formData is available (for editing)
   useEffect(() => {
     if (formData) {
       reset({
@@ -72,7 +71,6 @@ const FitnessFormPage = () => {
   }, [formData, reset]);
 
   const onSubmit = async (data: FitnessFormData) => {
-    // Additional check: end_date should not be less than start_date
     if (data.start_date && data.end_date && new Date(data.end_date) < new Date(data.start_date)) {
       showToast("End date cannot be less than start date", "error");
       return;
@@ -110,9 +108,9 @@ const FitnessFormPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-2xl shadow-xl w-96 space-y-4">
-        <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
+          <div className="flex justify-center items-center h-[500px] mt-44">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-2xl shadow-xl w-[500px] space-y-4">
+        <h2 className="text-xl font-semibold mb-4 text-center text-purple-700">
           {id !== null ? "Edit Fitness Goal" : "Add Fitness Goal"}
         </h2>
 
@@ -123,7 +121,7 @@ const FitnessFormPage = () => {
           <select
             id="goal_type"
             {...register("goal_type", { required: "Goal type is required" })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           >
             <option value="weight_loss">{WEIGHT_LOSS}</option>
             <option value="workout_per_week">Workout Per Week</option>
@@ -137,14 +135,13 @@ const FitnessFormPage = () => {
           </label>
           <input
             type="number"
-            inputMode="numeric"
             id="target_value"
             placeholder="0"
-            {...register("target_value", { 
-              required: "Target value is required", 
-              validate: (value) => Number(value) > 0 || "Target value must be greater than 0"
+            {...register("target_value", {
+              required: "Target value is required",
+              validate: (value) => Number(value) > 0 || "Target value must be greater than 0",
             })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           />
           {errors.target_value && <p className="text-red-500 text-sm">{errors.target_value.message}</p>}
         </div>
@@ -157,12 +154,12 @@ const FitnessFormPage = () => {
             type="number"
             id="current_progress"
             placeholder="0"
-            {...register("current_progress", { 
-              required: "Current progress is required", 
+            {...register("current_progress", {
+              required: "Current progress is required",
               valueAsNumber: true,
-              validate: (value) => value > 0 || "Current progress must be greater than 0"
+              validate: (value) => value > 0 || "Current progress must be greater than 0",
             })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           />
           {errors.current_progress && <p className="text-red-500 text-sm">{errors.current_progress.message}</p>}
         </div>
@@ -175,7 +172,7 @@ const FitnessFormPage = () => {
             type="date"
             id="start_date"
             {...register("start_date", { required: "Start date is required" })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           />
           {errors.start_date && <p className="text-red-500 text-sm">{errors.start_date.message}</p>}
         </div>
@@ -187,7 +184,7 @@ const FitnessFormPage = () => {
           <input
             type="date"
             id="end_date"
-            {...register("end_date", { 
+            {...register("end_date", {
               required: "End date is required",
               validate: (value) => {
                 const startDate = watch("start_date");
@@ -195,9 +192,9 @@ const FitnessFormPage = () => {
                   return "End date cannot be less than start date";
                 }
                 return true;
-              }
+              },
             })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           />
           {errors.end_date && <p className="text-red-500 text-sm">{errors.end_date.message}</p>}
         </div>
@@ -209,7 +206,7 @@ const FitnessFormPage = () => {
           <select
             id="status"
             {...register("status", { required: "Status is required" })}
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300"
           >
             <option value="pending">{PENDING}</option>
             <option value="complete">{COMPLETE}</option>
@@ -218,7 +215,7 @@ const FitnessFormPage = () => {
           {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition">
+        <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg transition">
           {id !== null ? UPDATE_GOAL : ADD_GOAL}
         </button>
 

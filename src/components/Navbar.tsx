@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
-import {  
-  NAVBAR_TITLE,  
-  WORKOUTS,  
+import {
+  NAVBAR_TITLE,
+  WORKOUTS,
   FITNESS_GOALS_TITLE,
-  VIEW_WORKOUTS,  
-  ADD_WORKOUT_TITLE,  
-  VIEW_FITNESS_GOALS,  
-  ADD_FITNESS_GOAL_TITLE, 
-  LOGOUT_BUTTON,  
-  LOGIN_BUTTON,  
+  VIEW_WORKOUTS,
+  ADD_WORKOUT_TITLE,
+  VIEW_FITNESS_GOALS,
+  ADD_FITNESS_GOAL_TITLE,
+  LOGOUT_BUTTON,
+  LOGIN_BUTTON,
   SIGNUP_BUTTON,
 } from "../constants";
 import { fetchSteak, fetchWorkoutDates } from "../services/WorkoutAPI";
@@ -38,16 +38,15 @@ const Navbar: React.FC = () => {
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
-      
+
         const allDates: Workout[] = await fetchWorkoutDates(year, month);
         const filteredDates = allDates.filter(workout => {
           const workoutMonth = new Date(workout.workout_date).getMonth() + 1;
           return workoutMonth === month;
         });
-      
+
         setWorkoutDates(filteredDates);
       };
-      
 
       fetchStreak();
       fetchDates();
@@ -71,7 +70,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-blue-600 p-4">
+    <nav className="bg-purple-600 p-4 mb-4">
       <div className="flex justify-between items-center">
         <div className="text-white text-2xl font-bold">
           <Link to="/">{NAVBAR_TITLE}</Link>
@@ -81,10 +80,10 @@ const Navbar: React.FC = () => {
           {user ? (
             <>
               <div className="relative group">
-                <button className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg">
-                  {WORKOUTS}
+                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
+                <i className="fa-solid fa-dumbbell mr-2"></i>{WORKOUTS}
                 </button>
-                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block">
+                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block z-50">
                   <Link to="/workoutViews" className="block px-4 py-2 hover:bg-gray-200">
                     {VIEW_WORKOUTS}
                   </Link>
@@ -95,10 +94,10 @@ const Navbar: React.FC = () => {
               </div>
 
               <div className="relative group">
-                <button className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg">
-                  {FITNESS_GOALS_TITLE}
+                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
+                <i className="fa-solid fa-bullseye mr-2"></i>{FITNESS_GOALS_TITLE}
                 </button>
-                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block">
+                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block z-50">
                   <Link to="/fitnessViews" className="block px-4 py-2 hover:bg-gray-200">
                     {VIEW_FITNESS_GOALS}
                   </Link>
@@ -109,64 +108,55 @@ const Navbar: React.FC = () => {
               </div>
 
               <div className="relative group">
-                  <button
-                    onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                    className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg"
-                  >
-                    Calendar
-                  </button>
-                    {isCalendarOpen && (
-                      <div
-                        className="absolute top-full mt-5 bg-white rounded-lg shadow-lg p-4 w-96 z-10"
-                        style={{ right: "-100px" }}
-                      >
-                        <button
-                          onClick={() => setIsCalendarOpen(false)}
-                          className="absolute top-2 right-2 text-red-500 font-bold"
-                        >
-                          X
-                        </button>
-                        <h2 className="text-xl font-bold text-center mb-4">Workout Calendar</h2>
-                        <div className="grid grid-cols-7 gap-2">
-                          {getCurrentMonthDays().map((day) => {
-                            const dateStr = day.toLocaleDateString("en-CA");
-                            const isWorkoutDay = workoutDates.some(
-                              (workout) => workout.workout_date === dateStr
-                            );
-                            const isFutureDate = day > new Date();
-                            const workoutCount = workoutDates.filter(
-                              (workout) => workout.workout_date === dateStr
-                            ).length;
+  <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center">
+    <i className="fa-solid fa-calendar-days mr-2"></i> Workout Calendar
+  </button>
 
-                            return (
-                              <div
-                                key={dateStr}
-                                className={`w-10 h-10 flex items-center justify-center rounded-full 
-                                  ${isFutureDate
-                                    ? "bg-gray-400 text-white"
-                                    : workoutCount > 1
-                                      ? "bg-yellow-400 text-white"
-                                      : isWorkoutDay
-                                        ? "bg-green-400 text-white"
-                                        : "bg-red-400 text-white"}`}
-                              >
-                                {day.getDate()}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
+  <div
+    className="absolute top-full mt-5 bg-white rounded-lg shadow-lg p-4 w-96 z-10 hidden group-hover:block"
+    style={{ right: "-100px" }}
+  >
+    <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
+    <div className="grid grid-cols-7 gap-2">
+      {getCurrentMonthDays().map((day) => {
+        const dateStr = day.toLocaleDateString("en-CA");
+        const isWorkoutDay = workoutDates.some(
+          (workout) => workout.workout_date === dateStr
+        );
+        const isFutureDate = day > new Date();
+        const workoutCount = workoutDates.filter(
+          (workout) => workout.workout_date === dateStr
+        ).length;
+
+        return (
+          <div
+            key={dateStr}
+            className={`w-10 h-10 flex items-center justify-center rounded-full
+              ${isFutureDate
+                ? "bg-gray-400 text-white"
+                : workoutCount > 1
+                  ? "bg-green-900 text-white"
+                  : isWorkoutDay
+                    ? "bg-green-600 text-white"
+                    : "bg-red-400 text-white"}`}
+          >
+            {day.getDate()}
+          </div>
+        );
+      })}
+    </div>
+  </div>
 </div>
 
 
-
-              <div className="text-white px-4 py-2 rounded-lg bg-green-500">
-                Streak: {streak} days
+              <div className="text-white px-4 py-2 rounded-lg flex items-center">
+              <i className="fa-solid fa-fire-flame-curved mr-2"></i>
+              Streak: {streak} days
               </div>
 
               <div className="relative group">
-                <button className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg">
+                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center">
+                  <i className="fa-solid fa-user mr-2"></i>
                   {user && user.name ? user.name : "Profile"}
                 </button>
                 <div className="absolute right-1 hidden bg-white text-black shadow-lg rounded-lg min-w-32 group-hover:block">
@@ -178,16 +168,16 @@ const Navbar: React.FC = () => {
                     className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                   >
                     {LOGOUT_BUTTON}
-                   </button>
+                  </button>
                 </div>
               </div>
             </>
           ) : (
             <>
-              <Link to="/login" className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg">
+              <Link to="/login" className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
                 {LOGIN_BUTTON}
               </Link>
-              <Link to="/signup" className="text-white hover:bg-blue-500 px-4 py-2 rounded-lg">
+              <Link to="/signup" className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
                 {SIGNUP_BUTTON}
               </Link>
             </>
